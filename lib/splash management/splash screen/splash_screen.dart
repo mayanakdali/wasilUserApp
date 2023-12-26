@@ -8,6 +8,7 @@ import '../../home management/home screens/home.dart';
 import '../../onboarding/onboarding_screen.dart';
 import '../../register/register screens/register_screen.dart';
 
+
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
