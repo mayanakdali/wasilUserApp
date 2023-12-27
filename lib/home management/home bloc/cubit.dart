@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wasil/home%20management/home%20bloc/state.dart';
-
 import '../../../shared/end points/end_points1.dart';
 import '../../../shared/network/remot/dio_helper.dart';
 import '../../model/address.dart';
@@ -33,15 +32,12 @@ class HomeCubit extends Cubit<HomeStates> {
   }
 
   // get home banners
-  List<Banners> banners = [];
+  Banner banners = Banner();
   getBanner() {
-    categories = [];
     emit(GetBannerLoadingState());
     DioHelper.getData(url: getBanners).then((value) {
-      value.data.forEach((element) {
-        categories.add(CategoriesModel.fromJson(element));
-        print(element);
-      });
+      banners = Banner.fromJson(value.data);
+      print(value.data);
       emit(GetBannerSuccessState());
     }).catchError((error) {
       print(error);

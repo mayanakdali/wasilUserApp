@@ -89,7 +89,7 @@ class _MyAppState extends State<MyApp> {
             BlocProvider(
                 create: (_) => HomeCubit()
                   ..getBanner()
-                  ..getUserAddresses()),
+                  ..getHomeCategories()),
             BlocProvider(create: (_) => AddressCubit())
           ],
           child: GetMaterialApp(

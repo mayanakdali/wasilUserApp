@@ -18,7 +18,6 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
     var cubit = HomeCubit.get(context);
-    // AddressController controllerAddress = Get.put(AddressController());
     LocaleController controller = Get.put(LocaleController());
     return BlocConsumer<HomeCubit, HomeStates>(
         listener: (context, state) {},
@@ -40,6 +39,7 @@ class Home extends StatelessWidget {
                       ),
                       child: InkWell(
                           onTap: () {
+                            cubit.getBanner();
                             // UserNavigator.of(context).push(const OrderDetail());
                           },
                           child: const Icon(Icons.shopping_bag)),
@@ -49,32 +49,33 @@ class Home extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AddressWidget(),
-                  cubit.banners.isEmpty
-                      ? Image.asset(
-                          'assets/images/mobil_home.png',
-                          fit: BoxFit.cover,
-                          height: 140,
-                          width: double.infinity,
-                        )
-                      : SizedBox(
-                          height: 150,
-                          child: Swiper(
-                            itemBuilder: (BuildContext context, int index) {
-                              return Image.network(
-                                cubit.banners[index].url.toString(),
-                                fit: BoxFit.fill,
-                              );
-                            },
-                            autoplay: true,
-                            itemCount: cubit.banners.length,
-                            pagination: const SwiperPagination(
-                                alignment: Alignment.bottomCenter,
-                                builder: DotSwiperPaginationBuilder(
-                                    color: Colors.white,
-                                    activeColor: AppColors.primaryColor)),
-                            // control: const SwiperControl(color: Colors.black),
-                          ),
-                        ),
+                  // cubit.banners.data!.banners == null
+                  //     ? Image.asset(
+                  //         'assets/images/mobil_home.png',
+                  //         fit: BoxFit.cover,
+                  //         height: 140,
+                  //         width: double.infinity,
+                  //       )
+                  //     :
+                  SizedBox(
+                    height: 150,
+                    child: Swiper(
+                      itemBuilder: (BuildContext context, int index) {
+                        return Image.network(
+                          cubit.banners.data?.banners?[index].url?.toString() ??
+                              'https://placeholder.com/your/default/image',
+                          fit: BoxFit.fill,
+                        );
+                      },
+                      autoplay: true,
+                      itemCount: cubit.banners.data?.banners?.length ?? 0,
+                      pagination: const SwiperPagination(
+                          alignment: Alignment.bottomCenter,
+                          builder: DotSwiperPaginationBuilder(
+                              color: Colors.white,
+                              activeColor: AppColors.primaryColor)),
+                    ),
+                  ),
                   const SizedBox(height: 50),
                   Expanded(
                     child: ListView.builder(
@@ -125,12 +126,11 @@ class Home extends StatelessWidget {
                                     width: 30.w,
                                   ),
                                   Text(
-                                    controller.language!.languageCode == 'en'
-                                        ? '${cubit.categories[index].title?.en}'
-                                        : '${cubit.categories[index].title?.ar}',
-                                    style: const TextStyle(
-                                        color: Colors.black, fontSize: 15),
-                                  ),
+                                      controller.language!.languageCode == 'en'
+                                          ? '${cubit.categories[index].title?.en}'
+                                          : '${cubit.categories[index].title?.ar}',
+                                      style: const TextStyle(
+                                          color: Colors.black, fontSize: 15)),
                                 ],
                               )),
                         );
